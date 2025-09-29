@@ -4,126 +4,12 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Quick Slides</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-  <div class="templates-overlay" id="templatesOverlay" role="dialog" aria-modal="true" aria-labelledby="templatesTitle" hidden>
-    <div class="templates-modal" role="document" tabindex="-1">
-      <div class="templates-header">
-        <h2 id="templatesTitle">Slide templates</h2>
-        <button id="closeTemplatesBtn" class="ghost" aria-label="Close templates">✕</button>
-      </div>
-      <div class="templates-body">
-        <p><strong>Title</strong></p>
-        <pre># Your headline
-&gt; Optional subtitle</pre>
-        <p><strong>Bullets</strong></p>
-        <pre># Slide title
-- First point
-- Second point</pre>
-        <p><strong>Two columns</strong></p>
-        <pre>::two-col
-Left column title
-- Detail
-|||
-Right column title
-- Detail</pre>
-        <p><strong>Quote</strong></p>
-        <pre>::quote
-"Inspiring message."
-— Author Name</pre>
-        <p><strong>Image hero</strong></p>
-        <pre>::image https://source
-# Title
-&gt; Subtitle</pre>
-        <p><strong>Section break</strong></p>
-        <pre>::section
-Section title</pre>
-      </div>
-      <button id="copyTemplatesBtn" class="primary">Copy examples</button>
-    </div>
-  </div>
 
-  <header class="topbar">
-    <div class="brand">
-      <h1>Quick Slides</h1>
-      <button id="templatesBtn" class="ghost" aria-haspopup="dialog" aria-controls="templatesOverlay" aria-label="Templates help">?</button>
-    </div>
-    <div class="actions" role="group" aria-label="Slide controls">
-      <button id="generateBtn" class="primary" aria-label="Generate slides">Generate</button>
-      <button id="presentBtn" aria-label="Start presentation">Present</button>
-      <button id="prevBtn" aria-label="Previous slide" title="Arrow Left">◀</button>
-      <button id="nextBtn" aria-label="Next slide" title="Arrow Right">▶</button>
-      <button id="pdfBtn" aria-label="Export PDF">Export PDF</button>
-      <button id="settingsToggle" class="ghost" aria-label="Toggle settings" aria-expanded="false" aria-controls="settingsPanel">⚙️</button>
     </div>
   </header>
 
   <main class="layout">
-    <section class="editor" aria-labelledby="editorHeading">
-      <div class="editor-card">
-        <label id="editorHeading" for="inputText"><strong>Paste your content.</strong> Blank line or <code>---</code> starts a new slide.</label>
-        <textarea id="inputText" spellcheck="false" aria-label="Slide content input" placeholder="Example:
-# Title slide
-&gt; Compelling subtitle
 
-# Problem
-- Manual, slow diligence
-- Disconnected data
-- Bandwidth bottlenecks
-
----
-::image https://source
-# Design with impact
-&gt; Immersive, cinematic slides"></textarea>
-      </div>
-    </section>
-
-    <section class="stage" aria-live="polite">
-      <div class="stage-frame">
-        <div id="slides" class="slides ratio-169"></div>
-        <div class="progress" role="progressbar" aria-label="Slide progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-          <div id="progressFill" class="progress-fill"></div>
-        </div>
-      </div>
-    </section>
-
-    <aside class="settings" id="settingsPanel" aria-label="Settings" tabindex="-1">
-      <h2>Settings</h2>
-      <div class="field">
-        <label for="themeSelect">Theme</label>
-        <select id="themeSelect">
-          <option value="aurora">Aurora</option>
-          <option value="minimal">Minimal</option>
-          <option value="sunset">Sunset</option>
-          <option value="carbon">Carbon</option>
-        </select>
-      </div>
-      <div class="field">
-        <label for="ratioSelect">Aspect ratio</label>
-        <select id="ratioSelect">
-          <option value="ratio-169">16:9</option>
-          <option value="ratio-43">4:3</option>
-          <option value="ratio-a4">A4 landscape</option>
-        </select>
-      </div>
-      <fieldset class="field brand">
-        <legend>Brand</legend>
-        <label for="brandPrimary">Primary color</label>
-        <input type="color" id="brandPrimary" value="#3250ff" />
-        <label for="brandAccent">Accent color</label>
-        <input type="color" id="brandAccent" value="#ff7a64" />
-        <label for="brandLogo">Logo URL</label>
-        <input type="url" id="brandLogo" placeholder="https://" />
-      </fieldset>
-    </aside>
-  </main>
-
-  <footer class="foot">
-    <small>Tip: Use Left and Right arrow keys in presentation. Content and settings stay in this browser.</small>
   </footer>
 
   <script src="script.js"></script>
