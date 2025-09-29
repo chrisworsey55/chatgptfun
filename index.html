@@ -4,51 +4,12 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Quick Slides</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-  <header class="topbar">
-    <h1>Quick Slides</h1>
-    <div class="actions">
-      <button id="generateBtn">Generate slides</button>
-      <button id="presentBtn">Start presentation</button>
-      <button id="prevBtn" title="Arrow Left">◀</button>
-      <button id="nextBtn" title="Arrow Right">▶</button>
-      <button id="pdfBtn">Export PDF</button>
-      <select id="themeSelect" aria-label="Theme">
-        <option value="light">Light</option>
-        <option value="dark">Dark</option>
-        <option value="clean">Clean</option>
-      </select>
+
     </div>
   </header>
 
   <main class="layout">
-    <section class="editor">
-      <label for="inputText"><strong>Paste your content here.</strong>
-        Each blank line or a line with three dashes --- starts a new slide.</label>
-      <textarea id="inputText" spellcheck="false" placeholder="Example:
-Title slide
 
-Problem
-Buyers cannot see signal in noise.
-
----
-Solution
-AI agents turn messy data into decisions.
-
----
-Call to action
-Email chris@company.com"></textarea>
-    </section>
-
-    <section class="stage">
-      <div id="slides" class="slides"></div>
-    </section>
-  </main>
-
-  <footer class="foot">
-    <small>Tip: Use Left and Right arrow keys in presentation. Content is stored locally in your browser.</small>
   </footer>
 
   <script src="script.js"></script>
