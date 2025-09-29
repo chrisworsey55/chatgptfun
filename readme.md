@@ -1,0 +1,2 @@
+# chatgptfun
+First commit 🚀
