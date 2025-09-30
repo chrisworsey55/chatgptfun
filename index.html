@@ -8,19 +8,41 @@
 </head>
 <body>
   <header class="topbar">
-    <h1>Quick Slides</h1>
+    <div class="brand">
+      <h1>Quick Slides</h1>
+      <span class="tagline">Collaborative decks in seconds</span>
+    </div>
     <div class="actions">
       <button id="generateBtn">Generate slides</button>
       <button id="presentBtn">Start presentation</button>
       <button id="prevBtn" title="Arrow Left">◀</button>
       <button id="nextBtn" title="Arrow Right">▶</button>
-      <button id="pdfBtn">Export PDF</button>
       <select id="themeSelect" aria-label="Theme">
         <option value="light">Light</option>
         <option value="dark">Dark</option>
         <option value="contrast">High contrast</option>
         <option value="clean">Clean</option>
       </select>
+      <div class="export-controls">
+        <select id="exportFormat" aria-label="Export format">
+          <option value="pdf">PDF</option>
+          <option value="pptx">PowerPoint</option>
+          <option value="images">Image deck</option>
+        </select>
+        <select id="exportPipeline" aria-label="Export pipeline">
+          <option value="wasm">WASM</option>
+          <option value="cloud">Cloud</option>
+        </select>
+        <button id="exportBtn">Export deck</button>
+      </div>
+      <div class="share-controls" data-feature="collab">
+        <button id="shareBtn">Copy share link</button>
+        <input id="shareLink" type="text" readonly aria-label="Shareable link" />
+      </div>
+    </div>
+    <div class="account" data-feature="teamWorkflows">
+      <span id="userBadge" class="user-badge" aria-live="polite">Guest</span>
+      <button id="accountBtn">Sign in</button>
     </div>
   </header>
 
@@ -41,17 +63,76 @@ AI agents turn messy data into decisions.
 ---
 Call to action
 Email chris@company.com"></textarea>
+      <div class="ai-tools" data-feature="aiAssist">
+        <h2>AI assistant</h2>
+        <label class="sr-only" for="aiPrompt">Prompt</label>
+        <textarea id="aiPrompt" placeholder="Describe the story you want to tell..." rows="3"></textarea>
+        <div class="ai-actions">
+          <button id="aiDraftBtn">Draft slides</button>
+          <label for="aiTone">Tone</label>
+          <select id="aiTone">
+            <option value="formal">Formal</option>
+            <option value="casual">Casual</option>
+            <option value="inspirational">Inspirational</option>
+            <option value="technical">Technical</option>
+          </select>
+          <button id="aiToneBtn">Apply tone</button>
+        </div>
+        <div class="ai-suggestions">
+          <label for="aiTopic">Need another slide?</label>
+          <input id="aiTopic" type="text" placeholder="e.g. Risks" />
+          <button id="aiSuggestBtn">Suggest slide</button>
+        </div>
+        <ul id="aiSuggestions" class="suggestions" aria-live="polite"></ul>
+      </div>
     </section>
 
     <section class="stage">
       <div id="slides" class="slides"></div>
+      <div class="comments" data-feature="teamWorkflows">
+        <h2>Slide comments</h2>
+        <ul id="commentList" aria-live="polite"></ul>
+        <label class="sr-only" for="commentInput">Comment</label>
+        <textarea id="commentInput" rows="2" placeholder="Leave feedback for collaborators"></textarea>
+        <button id="commentSubmit">Add comment</button>
+      </div>
     </section>
+
+    <aside class="workspace">
+      <section class="collab" data-feature="collab">
+        <h2>Collaboration</h2>
+        <div class="status">Live status: <span id="collabStatus">offline</span></div>
+        <button id="syncBtn">Sync now</button>
+        <p class="hint">Share the link above to collaborate in real time.</p>
+      </section>
+      <section class="history" data-feature="teamWorkflows">
+        <h2>Deck history</h2>
+        <ul id="historyList"></ul>
+      </section>
+    </aside>
   </main>
 
   <footer class="foot">
     <small>Tip: Use Left and Right arrow keys in presentation. Content is stored locally in your browser.</small>
   </footer>
 
-  <script src="script.js"></script>
+  <dialog id="accountDialog">
+    <form method="dialog" id="accountForm">
+      <h2>Team account</h2>
+      <label for="accountName">Name</label>
+      <input id="accountName" name="name" required />
+      <label for="accountEmail">Email</label>
+      <input id="accountEmail" name="email" type="email" required />
+      <label for="accountOrg">Organization</label>
+      <input id="accountOrg" name="organization" />
+      <menu>
+        <button value="cancel">Cancel</button>
+        <button id="accountSave" value="confirm">Save</button>
+        <button type="button" id="signOutBtn">Sign out</button>
+      </menu>
+    </form>
+  </dialog>
+
+  <script type="module" src="script.js"></script>
 </body>
 </html>
