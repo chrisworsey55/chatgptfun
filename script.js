@@ -49,6 +49,7 @@ const exportService = createExportService({ defaultPipeline: "wasm" });
 const collabService = new CollaborationService();
 const aiService = new AiService();
 const accountService = new AccountService();
+const hasSharedDeckParam = new URLSearchParams(window.location.search).has("deck");
 
 let slides = [];
 let current = 0;
@@ -77,6 +78,18 @@ function stringifySlides(collection) {
 
 function renderSlides() {
   slidesEl.innerHTML = "";
+  if (!slides.length) {
+    const empty = document.createElement("div");
+    empty.className = "slides-empty";
+    empty.innerHTML = `
+      <div class="empty-icon" aria-hidden="true">🪄</div>
+      <h2>Start a fresh deck</h2>
+      <p>Drop your outline on the left or ask the AI assistant to draft slides for you.</p>
+      <div class="empty-hint">Tip: Press <kbd>Generate slides</kbd> after pasting your content.</div>
+    `;
+    slidesEl.appendChild(empty);
+    return;
+  }
   slides.forEach((slide, index) => {
     const card = document.createElement("div");
     card.className = "slide";
@@ -358,6 +371,49 @@ function persistDeck() {
   updateShareLink(deck);
 }
 
+function clearStoredDeckState() {
+  const previousDeckId = localStorage.getItem(DECK_ID_KEY);
+  if (previousDeckId) {
+    collabService.clearDeck(previousDeckId);
+  }
+  localStorage.removeItem(STORAGE_KEY);
+  localStorage.removeItem(DECK_NAME_KEY);
+  localStorage.removeItem(DECK_ID_KEY);
+}
+
+function resetDeckToFresh() {
+  const previousDeckId = deckId || localStorage.getItem(DECK_ID_KEY);
+  if (previousDeckId) {
+    collabService.clearDeck(previousDeckId);
+  }
+  document.documentElement.classList.remove("present");
+  slides = [];
+  current = 0;
+  deckId = "";
+  aiDrafts = [];
+  input.value = "";
+  if (shareLink) shareLink.value = "";
+  if (shareBtn) shareBtn.textContent = "Copy share link";
+  if (aiSuggestionsList) aiSuggestionsList.innerHTML = "";
+  localStorage.removeItem(STORAGE_KEY);
+  localStorage.removeItem(DECK_NAME_KEY);
+  localStorage.removeItem(DECK_ID_KEY);
+  collabService.setDeckId(undefined);
+  updateCollabStatus("offline");
+  renderSlides();
+  renderComments(current);
+  updateHistory();
+}
+
+function isBackNavigation(event) {
+  if (event?.persisted) return true;
+  const entries = performance?.getEntriesByType?.("navigation");
+  if (entries && entries.length > 0) {
+    return entries[0].type === "back_forward";
+  }
+  return false;
+}
+
 function generate() {
   slides = parseSlides(input.value);
   current = Math.min(current, slides.length - 1);
@@ -389,21 +445,6 @@ function hydrateFromShareLink() {
   if (sharedDeck) {
     applyRemoteDeck(sharedDeck);
     return sharedDeck.id;
-  }
-  const storedId = localStorage.getItem(DECK_ID_KEY);
-  if (storedId) {
-    collabService.setDeckId(storedId);
-    deckId = storedId;
-    const storedDeck = collabService.loadDeck();
-    if (storedDeck) {
-      applyRemoteDeck(storedDeck);
-      return storedDeck.id;
-    }
-  }
-  const stored = collabService.loadDeck();
-  if (stored) {
-    applyRemoteDeck(stored);
-    return stored.id;
   }
   return uuid();
 }
@@ -469,14 +510,15 @@ function initCollab() {
 }
 
 function initLocalState() {
-  const storedInput = localStorage.getItem(STORAGE_KEY);
-  if (storedInput) {
-    input.value = storedInput;
-  }
+  input.value = "";
   const storedTheme = localStorage.getItem(THEME_KEY) || "light";
   applyTheme(storedTheme);
   const deckName = slides[0]?.title || "Quick deck";
   localStorage.setItem(DECK_NAME_KEY, deckName);
+}
+
+if (!hasSharedDeckParam) {
+  clearStoredDeckState();
 }
 
 generateBtn.addEventListener("click", generate);
@@ -498,6 +540,12 @@ document.addEventListener("keydown", event => {
   if (event.key === "ArrowRight") next();
   if (event.key === "ArrowLeft") prev();
   if (event.key === "Escape") endPresentation();
+});
+
+window.addEventListener("pageshow", event => {
+  if (!hasSharedDeckParam && isBackNavigation(event)) {
+    resetDeckToFresh();
+  }
 });
 
 themeSelect.addEventListener("change", event => {
