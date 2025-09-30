@@ -105,6 +105,18 @@ export class CollaborationService extends EventTarget {
     return `${COMMENT_PREFIX}${this.deckId}`;
   }
 
+  clearDeck(deckId = this.deckId) {
+    const id = deckId;
+    if (!id) return;
+    try {
+      localStorage.removeItem(`${STORAGE_PREFIX}${id}`);
+      localStorage.removeItem(`${HISTORY_PREFIX}${id}`);
+      localStorage.removeItem(`${COMMENT_PREFIX}${id}`);
+    } catch (error) {
+      console.warn("Failed to clear deck storage", error);
+    }
+  }
+
   loadDeck() {
     if (!this.deckId) return undefined;
     return readLocal(this.deckKey, undefined);
