@@ -307,10 +307,21 @@ async function handleDraft() {
   if (!prompt) return;
   aiDraftBtn.disabled = true;
   aiDraftBtn.textContent = "Drafting…";
-  aiDrafts = await aiService.draftSlides({ prompt });
-  renderSuggestions(aiDrafts);
-  aiDraftBtn.disabled = false;
-  aiDraftBtn.textContent = "Draft slides";
+  try {
+    aiDrafts = await aiService.draftSlides({ prompt });
+    if (aiDrafts.length) {
+      slides = aiDrafts.map(slide => ({ title: slide.title, bullets: slide.bullets }));
+      current = 0;
+      renderSlides();
+      showCurrent();
+      updateInputFromSlides();
+      persistDeck();
+    }
+    renderSuggestions(aiDrafts);
+  } finally {
+    aiDraftBtn.disabled = false;
+    aiDraftBtn.textContent = "Draft slides";
+  }
 }
 
 function applyTone() {
