@@ -204,9 +204,17 @@ select {
   width: 100%;
   padding: 10px 12px;
   border-radius: 12px;
-  border: 1px solid rgba(52, 84, 255, 0.2);
-  background: #ffffff;
+  border: 1px solid var(--input-border);
+  background: var(--input-bg);
+  color: var(--fg);
   box-shadow: 0 10px 20px rgba(52, 84, 255, 0.1);
+  transition: border 180ms ease, box-shadow 200ms ease, background 200ms ease, color 200ms ease;
+}
+
+.ai-tools textarea::placeholder,
+.ai-tools input[type="text"]::placeholder {
+  color: var(--muted);
+  opacity: 0.7;
 }
 
 .ai-actions,
